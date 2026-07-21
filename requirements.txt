@@ -1,0 +1,11 @@
+dpkt>=1.9
+pandas>=2.0
+pyarrow>=14.0
+matplotlib>=3.5
+geoip2>=4.7
+maxminddb>=2.5
+pytricia>=1.0
+pelicanfs>=1.0
+pybgpkit-parser>=0.18
+# ^ import as `import pybgpkit_parser as bgpkit` (NOT `import bgpkit` -
+# the package on PyPI is "pybgpkit-parser", not "pybgpkit").

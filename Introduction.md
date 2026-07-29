@@ -8,9 +8,10 @@
 - [Internet background radiation (Wikipedia)](https://en.wikipedia.org/wiki/Internet_background_noise) — what a network telescope actually observes
 - [Hilbert curve (Wikipedia)](https://en.wikipedia.org/wiki/Hilbert_curve) — the space-filling curve used to visualize scan footprints in Task 7
 
-### Prerequisite NIDS Modules
+### Prerequisite NIDS Assignments
 
-- [Understanding the BGP Control Plane](https://github.com/CAIDA/nids-bgp-control-plane) — this module reuses its prefix-to-AS mapping and longest-prefix-match technique to resolve origin ASes for observed traffic
+- [How the Internet assigns and uses Autonomous Systems (ASes)](https://github.com/CAIDA/nids-asn-introduction)
+- [Understanding the BGP Control Plane](https://github.com/CAIDA/nids-bgp-control-plane)
 
 ## Introduction
 
@@ -24,7 +25,7 @@ Working packet-by-packet does not scale — a single hour of telescope traffic a
 
 ### From Flows to Root Cause
 
-A flow's 5-tuple tells you *what* happened, but not *who* is behind it or *where* they're from. The analysis notebook enriches every flow's source IP with:
+A flow's 5-tuple tells you _what_ happened, but not _who_ is behind it or _where_ they're from. The analysis notebook enriches every flow's source IP with:
 
 - a **country**, via the **MaxMind GeoLite2** geolocation database, and
 - an **origin AS**, via the same **prefix-to-AS mapping and longest-prefix-match** technique you built in _nids-bgp-control-plane_, applied here to a live BGP RIB snapshot rather than the router table you counted addresses in previously.
@@ -33,7 +34,7 @@ With those two extra columns, you can aggregate traffic at whatever granularity 
 
 ### Visualizing a Scan
 
-Once you've narrowed the surge down to a single source IP (call it **the scanner**), the natural next question is *how* it scans: which protocols, which ports, and which destinations. Because a /16 has 65,536 addresses, a simple list of "destination IP → packet count" is hard to read as a whole. Task 7 instead lays the destination /16 out as a **Hilbert curve** — a space-filling curve that maps a 1-D sequence onto a 2-D grid while preserving locality, so that addresses which are numerically close stay visually close. Regions of the address space the scanner covered light up as a spatial pattern in the resulting image, making it easy to see, for example, whether it swept complete /24 blocks, skipped others, or clustered around specific subnets.
+Once you've narrowed the surge down to a single source IP (call it **the scanner**), the natural next question is _how_ it scans: which protocols, which ports, and which destinations. Because a /16 has 65,536 addresses, a simple list of "destination IP → packet count" is hard to read as a whole. Task 7 instead lays the destination /16 out as a **Hilbert curve** — a space-filling curve that maps a 1-D sequence onto a 2-D grid while preserving locality, so that addresses which are numerically close stay visually close. Regions of the address space the scanner covered light up as a spatial pattern in the resulting image, making it easy to see, for example, whether it swept complete /24 blocks, skipped others, or clustered around specific subnets.
 
 ### Why Screening for "Big Flows" Isn't Enough
 

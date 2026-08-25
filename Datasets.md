@@ -1,4 +1,4 @@
-[README](README.md) | [Introduction](Introduction.md) | Datasets ⮕ | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+[README](README.md) | [Introduction](Introduction.md) | Datasets ⮕ | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 # Datasets
 
@@ -6,9 +6,11 @@
 
 The compare notebook streams a raw telescope traffic sample per capture and builds an in-memory flow map before writing it to Parquet. Run both notebooks on an instance with **at least 16 GB of memory (24 GB recommended)**.
 
+The captures are only minutes long, but they are not small: each reduces to **millions of distinct flow records**, and the flow map holding them is what dominates memory — not the packet stream, which is processed one frame at a time and never fully resident. That is why the notebooks process one capture at a time and free each flow map (`del` + `gc.collect()`) before starting the next.
+
 ## UCSD Network Telescope PCAP Samples
 
-The traffic data is a small sample collected by one /16 of the CAIDA **UCSD Network Telescope** — a block of routed but unused address space that receives only unsolicited traffic (scanning, backscatter, misconfiguration; see [Introduction](Introduction.md)).
+The traffic data is a short sample — small only relative to the full telescope feed — collected by one /16 of the CAIDA **UCSD Network Telescope** — a block of routed but unused address space that receives only unsolicited traffic (scanning, backscatter, misconfiguration; see [Introduction](Introduction.md)).
 
 | Variable | Timestamp (UTC) | Notes |
 |---|---|---|
@@ -28,7 +30,7 @@ The compare notebook writes one Parquet file per capture, which the analysis not
 | `ip_src`, `port_src` | Source IP and port |
 | `ip_dst`, `port_dst` | Destination IP and port (anonymized into `10.0.0.0/8`) |
 | `proto` | `TCP`, `UDP`, `ICMP`, or `OTHER` |
-| `total_packets`, `total_bytes` | Aggregate counts for this 5-tuple |
+| `total_packets`, `total_bytes` | Aggregate counts for this 5-tuple. `total_bytes` sums the bytes *captured* per frame, so under a capture snap length it understates what was on the wire |
 | `first_seen`, `last_seen` | Timestamps of the first/last packet seen in this flow |
 | `tcp_flags_seen` | Comma-separated TCP flags observed (empty for non-TCP flows) |
 
@@ -97,7 +99,7 @@ def build_geoip_reader(source):
         return geoip2.database.Reader(stream, mode=maxminddb.MODE_FD)
 ```
 
-Unlike the multi-gigabyte PCAPs we stream incrementally, a GeoLite2 City database is small enough to hold fully in memory — so `MODE_FD` (one read) is the right call here, not streaming.
+Unlike the PCAPs, which we stream incrementally because the technique has to hold up on captures far larger than these, a GeoLite2 City database is small enough to hold fully in memory — so `MODE_FD` (one read) is the right call here, not streaming.
 
 ### Looking up an IP
 
@@ -121,6 +123,8 @@ Completing `geolocate_ip` (Task 3) is a matter of wrapping that one call in a `t
 
 Origin-AS resolution reuses the **RouteViews** RIB snapshot and **bgpkit** MRT parser from _nids-bgp-control-plane_ — see that module's Datasets page, in the [nids-bgp-control-plane repository](https://github.com/CAIDA/nids-bgp-control-plane), for the full RIB/MRT format description. The snapshot is fetched automatically via **OSDF**; building the `prefix → origin AS` map from a full RIB (tens of millions of routes) can take several minutes, so `build_prefix_to_asn` caches the result to disk (`prefix_to_asn.pkl`) and reuses it on subsequent runs instead of re-fetching.
 
+Which snapshot: the notebook lists the RIB archive for collector `COLLECTOR` (`route-views3`) under the month `RIB_MONTH` (`2026.06`) and takes the **first** RIB of that month. The captures are from 2026-06-26, so the routing view is a few weeks older than the traffic it is used to attribute. Prefix origins change slowly enough that this is fine for the module, but it is an approximation, not a snapshot contemporaneous with the captures — worth remembering if an attribution ever looks surprising.
+
 Note one difference from the prior module's environment: this one has **`pybgpkit-parser`** installed rather than `pybgpkit`, imported as `import pybgpkit_parser as bgpkit` — the `bgpkit.Parser(...)` API itself is unchanged.
 
-[README](README.md) | [Introduction](Introduction.md) | Datasets ⮕ | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+[README](README.md) | [Introduction](Introduction.md) | Datasets ⮕ | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

@@ -1,12 +1,14 @@
-[README](README.md) | Introduction ⮕ | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+[README](README.md) | Introduction ⮕ | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 # Introduction and Background
 
 ### Reading
 
-- [CAIDA network telescope datasets and research](https://catalog.caida.org/search?query=network+telescope) — background on the darknet infrastructure that collected the traffic used in this module
-- [Internet background radiation (Wikipedia)](https://en.wikipedia.org/wiki/Internet_background_noise) — what a network telescope actually observes
-- [Hilbert curve (Wikipedia)](https://en.wikipedia.org/wiki/Hilbert_curve) — the space-filling curve used to visualize scan footprints in Task 7
+- [Traffic Data: The UCSD Network Telescope](slides/ETP-Week-06-etp-Telescope-Plenary.pptx) (slides) — the lecture deck for this assignment
+- [CAIDA network telescope datasets and research](https://catalog.caida.org/search?query=network+telescope) (catalog) — background on the darknet infrastructure that collected the traffic used in this module
+- [Internet background noise](https://en.wikipedia.org/wiki/Internet_background_noise) (wikipedia) — what a network telescope actually observes, also called Internet background radiation
+- [Hilbert curve](https://en.wikipedia.org/wiki/Hilbert_curve) (wikipedia) — the space-filling curve used to visualize scan footprints in Task 7
+- [Expanse assignment briefing](slides/ETP-Week-06-expanse_assignment.pdf) (slides) — covers the follow-on _nids-ucsdnt-expanse_ module, not this one; this assignment runs on NRP JupyterHub
 
 ### Prerequisite NIDS Assignments
 
@@ -17,18 +19,18 @@
 
 A **network telescope** (or **darknet**) is a block of globally routed IP address space that hosts no real services. Because nothing legitimate should ever be addressed to it, essentially everything a telescope receives is unsolicited: scanning, backscatter from spoofed denial-of-service traffic, and misconfigured software. The **UCSD Network Telescope**, operated by CAIDA, is one of the largest such instruments on the Internet, and continuously records this "background radiation."
 
-This module gives you two short packet captures (`PCAP_A`, `PCAP_B`) from a /16 of the telescope, taken about 7 minutes apart on 2026-06-26 (08:53 and 09:00 UTC), with destination addresses anonymized into `10.0.0.0/8` and source addresses left intact. Between the two captures, the telescope observed a **traffic surge** — a sudden jump in volume. Your job, across two notebooks, is to figure out what caused it.
+This module gives you two packet captures (`PCAP_A`, `PCAP_B`) from a /16 of the telescope, taken about 7 minutes apart on 2026-06-26 (08:53 and 09:00 UTC), with destination addresses anonymized into `10.0.0.0/8` and source addresses left intact. They are brief in wall-clock terms but not small: together they carry over 22 million packets, which is why this module insists on a 16–24 GB instance (see [Datasets](Datasets.md)). Between the two captures, the telescope observed a **traffic surge** — a sudden jump in volume. Your job, across two notebooks, is to figure out what caused it.
 
 ### From Packets to Flows
 
-Working packet-by-packet does not scale — a single hour of telescope traffic already contains millions of packets. The compare notebook streams each PCAP once, without ever materializing the whole file in memory, and aggregates packets sharing the same **5-tuple** (source IP, source port, destination IP, destination port, protocol) into a **flow** record: a packet count, a byte count, first/last-seen timestamps, and the set of TCP flags observed. The resulting flow records — orders of magnitude fewer rows than raw packets — are persisted to **Parquet** files, so the raw per-packet state can be dropped from memory before the analysis notebook's work begins. Parsing each frame into its protocol layers is done with the **dpkt** library ([Dpkt](Dpkt.md)); the flow records are handed to the analysis notebook as Parquet files written with **pyarrow** ([Pyarrow](Pyarrow.md)).
+Working packet-by-packet does not scale — even these two brief captures contain over 22 million packets between them, and the telescope records continuously. The compare notebook streams each PCAP once, without ever materializing the whole file in memory, and aggregates packets sharing the same **5-tuple** (source IP, source port, destination IP, destination port, protocol) into a **flow** record: a packet count, a byte count, first/last-seen timestamps, and the set of TCP flags observed. The resulting flow records — orders of magnitude fewer rows than raw packets — are persisted to **Parquet** files, so the raw per-packet state can be dropped from memory before the analysis notebook's work begins. Parsing each frame into its protocol layers is done with the **dpkt** library ([Dpkt](Dpkt.md)); the flow records are handed to the analysis notebook as Parquet files written with **pyarrow** ([Pyarrow](Pyarrow.md)).
 
 ### From Flows to Root Cause
 
 A flow's 5-tuple tells you _what_ happened, but not _who_ is behind it or _where_ they're from. The analysis notebook enriches every flow's source IP with:
 
 - a **country**, via the **MaxMind GeoLite2** geolocation database, and
-- an **origin AS**, via the same **prefix-to-AS mapping and longest-prefix-match** technique you built in _nids-bgp-control-plane_, applied here to a live BGP RIB snapshot rather than the router table you counted addresses in previously.
+- an **origin AS**, via the same **prefix-to-AS mapping and longest-prefix-match** technique you built in _nids-bgp-control-plane_ — applied here to attribute observed traffic to its source network, rather than to count the address space each AS announces.
 
 With those two extra columns, you can aggregate traffic at whatever granularity the investigation needs — by country, then by AS within a country, then down to a single IP — following the volume until it stops concentrating. Along the way you may encounter a prefix associated with more than one origin AS, a **MOAS** — the same phenomenon introduced in _nids-bgp-control-plane_, seen here from the traffic side rather than the routing-table side.
 
@@ -45,4 +47,4 @@ It's tempting to assume that a scanner producing a traffic surge would show up a
 - [CAIDA scanning and Internet background radiation research](https://catalog.caida.org/search?query=scanning)
 - [Border Gateway Protocol (Wikipedia)](https://en.wikipedia.org/wiki/Border_Gateway_Protocol)
 
-[README](README.md) | Introduction ⮕ | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+[README](README.md) | Introduction ⮕ | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

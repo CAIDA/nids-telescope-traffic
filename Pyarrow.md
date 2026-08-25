@@ -1,9 +1,9 @@
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | Pyarrow ⮕ | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | Pyarrow ⮕ | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 # pyarrow Guide: Persisting Flow Records to Parquet
 
 This guide covers the [`pyarrow`](https://arrow.apache.org/docs/python/) you need
-to hand flow records from the compare notebook to the analysis notebook. The compare notebook builds a
+in order to hand flow records from the compare notebook to the analysis notebook. The compare notebook builds a
 `flow_map` in memory, writes it out as a **Parquet** file with pyarrow, and frees
 it; the analysis notebook reads that file back with pandas. The write path
 (`write_flow_map_parquet`) is **provided** — this page explains *why* it is
@@ -32,8 +32,9 @@ pandas `DataFrame`:
 
 Because `flow_map` is still resident when we write (it isn't freed until
 `process_capture` calls `del` + `gc.collect()` afterward), avoiding a second
-in-memory copy is exactly the kind of peak-memory saving that lets a 24 GB
-instance handle an hour of telescope traffic.
+in-memory copy is exactly the kind of peak-memory saving that keeps these
+captures — millions of flow records each — inside a 24 GB instance, and that
+lets the same code scale to far longer stretches of telescope traffic.
 
 ## 2. Building columnar arrays from `flow_map`
 
@@ -110,4 +111,4 @@ freed before the analysis begins.
   (§4).
 - **Read back only what you need** — the next stage rarely needs every column.
 
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | Pyarrow ⮕ | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | Pyarrow ⮕ | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

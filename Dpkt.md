@@ -1,9 +1,9 @@
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | Dpkt ⮕ | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | Dpkt ⮕ | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 # dpkt Guide: Parsing Telescope Packets
 
-This guide builds up the [`dpkt`](https://github.com/kbandla/dpkt) you need for
-**Task 1** (`flow_key`) in `flow_compare.ipynb`, one piece at a time. Each
+This guide builds up the [`dpkt`](https://github.com/kbandla/dpkt) knowledge you
+need for **Task 1** (`flow_key`) in `flow_compare.ipynb`, one piece at a time. Each
 section is a small, copy-pasteable snippet followed by the *why* and the
 gotchas — the same "building blocks" the provided `iter_packets` reader and the
 `flow_key` you write are assembled from. Read [Datasets](Datasets.md) first for
@@ -31,8 +31,10 @@ practice: **match the parser to the size of the data.**
 
 dpkt wins here because it is **fast and lazy**: it parses only the headers it is
 asked for and hands the rest back as raw bytes, so nothing is decoded until you
-reach for it. That laziness is what lets the compare notebook stream a multi-gigabyte
-capture with flat memory — the same memory-discipline theme that runs through
+reach for it. That laziness is what lets the compare notebook stream a capture of
+any size with flat memory — the two here hold over 22 million packets between
+them, and the same code would handle a multi-gigabyte capture unchanged. It is the
+same memory-discipline theme that runs through
 the whole module (stream the pcap, aggregate into flows, free the raw state
 before the analysis notebook).
 
@@ -220,4 +222,4 @@ silently.) The `flow_key` you complete in Task 1 uses exactly this guard.
 - **Let dpkt stay lazy** — only walk into the layers you actually need, so a
   packet you reject early is never fully decoded.
 
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | Dpkt ⮕ | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | Dpkt ⮕ | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

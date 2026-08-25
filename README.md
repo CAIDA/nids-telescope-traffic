@@ -1,4 +1,4 @@
-README ⮕ | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+README ⮕ | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 ### Network Infrastructure Data Science (NIDS) Module
 
@@ -8,14 +8,9 @@ README ⮕ | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](
 
 ## Learning Objectives
 
-The goal of this assignment is to build flow records from raw network telescope packet captures in a memory-efficient, streaming way; enrich those flows with IP geolocation and BGP-derived origin-AS information (reusing the prefix-to-AS mapping and longest-prefix-match technique from **nids-bgp-control-plane**); and use the enriched flow data to investigate a real traffic surge — narrowing the investigation from country, to AS, to a single source IP, to that IP's per-port scanning behavior, and visualizing its scan footprint with a Hilbert curve map.
+The goal of this assignment is to build flow records from raw network telescope packet captures in a memory-efficient, streaming way. You will enrich those flows with IP geolocation and BGP-derived origin-AS information, reusing the prefix-to-AS mapping and longest-prefix-match technique from **nids-bgp-control-plane**. You will then use the enriched flow data to investigate a real traffic surge, narrowing the investigation from country, to AS, to a single source IP, to that IP's per-port scanning behavior — and visualize its scan footprint with a Hilbert curve map.
 
 <img src="images/hilbert-curve.png" width="150px">
-
-## Slides
-
-- [ETP week 06 Telescope](slides/ETP-Week-06-etp-Telescope-Plenary.pptx)
-- [ETP week 06 Expanse Assignment](slides/ETP-Week-06-expanse_assignment.pdf)
 
 ## Overview
 
@@ -30,13 +25,12 @@ Start by reading **Introduction** to get the background needed to understand the
   - then complete `flow_analysis.ipynb`, which reads those Parquet files back in and performs the investigation
   - complete each task by replacing the marked sections with your code
   - answer all ten questions in the markdown cells that follow
-- step 5 download your working notebooks and replace ⬅ deliverables
-- step 6 commit and push to github
+- step 5 download your completed notebooks, commit, and push to GitHub ⬅ deliverables
 
 ### Directory Structure
 
 ```
-nids-etp-traffic
+nids-telescope-traffic
 ├- Introduction.md                          # Introduction and background
 ├- Datasets.md                              # Dataset overview and access instructions
 ├- Dpkt.md                                  # Guide - parsing telescope packets with dpkt (Task 1)
@@ -44,6 +38,10 @@ nids-etp-traffic
 ├- Tasks.md                                 # Task checklist and instructions
 ├- Task-hilbert-map.md                      # Guidance for Task 7's Hilbert curve visualization
 ├- requirements.txt                         # Python dependencies
+├- images/                                  # Figures used by the markdown pages
+├- slides/                                  # Lecture slides
+│  ├- ETP-Week-06-etp-Telescope-Plenary.pptx   # Week 06 telescope plenary - the deck for this assignment
+│  └- ETP-Week-06-expanse_assignment.pdf       # Briefing for the follow-on nids-ucsdnt-expanse module
 ├- flow_compare.ipynb                    ⬅  # compare notebook - build flow records. Complete / Commit / Push
 └- flow_analysis.ipynb                   ⬅  # analysis notebook - investigate the surge. Complete / Commit / Push
 ```
@@ -64,4 +62,4 @@ nids-etp-traffic
 - **pyarrow**: The Python binding for Apache Arrow, used in the compare notebook to write flow records straight to Parquet without first building a pandas `DataFrame`, so only one copy of the data is resident at a time. See [Pyarrow](Pyarrow.md).
 - **Hilbert curve**: A space-filling curve that maps a 1-D index to 2-D coordinates while preserving locality — nearby indices land on nearby points, at every scale. Used here to lay an IPv4 /16 block out as a 256×256 image so that scanned and unscanned regions of the address space form visually compact clusters rather than scattered noise.
 
-README ⮕ | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+README ⮕ | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

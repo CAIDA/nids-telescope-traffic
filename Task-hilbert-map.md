@@ -1,12 +1,12 @@
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | Task 7 ⮕ | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | Task 7 ⮕ | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 # Task 7 Guidance: Visualizing a Scan with a Hilbert Curve
 
-This provides a guide to visualizing the scanner's destination addresses, from Task 7, as a 2-D image that preserves address-space locality.
+This guide shows how the scanner's destination addresses, from Task 7, are laid out as a 2-D image that preserves address-space locality.
 
 ### Why Not Just List Destinations?
 
-The scanner's most-targeted /16 contains 65,536 possible addresses. A table of "destination IP → packet count" is complete but hard to read as a whole — you can't easily tell whether the scanner covered the block systematically, skipped ranges, or clustered around a few subnets. Laying all 65,536 addresses out on a 2-D grid solves this, *provided* the layout keeps numerically nearby addresses visually nearby — otherwise the image is just noise.
+The destination /16 contains 65,536 possible addresses. (The notebook picks the /16 the scanner sent the most packets to. Because the telescope's destination space is anonymized into `10.0.0.0/8`, in practice there is only one such /16 here — the selection matters when the same code is pointed at traffic spanning more address space.) A table of "destination IP → packet count" is complete but hard to read as a whole — you can't easily tell whether the scanner covered the block systematically, skipped ranges, or clustered around a few subnets. Laying all 65,536 addresses out on a 2-D grid solves this, *provided* the layout keeps numerically nearby addresses visually nearby — otherwise the image is just noise.
 
 ### Why a Hilbert Curve (and Not Row-Major Order)
 
@@ -46,25 +46,31 @@ def hilbert_d2xy(order, d):
 
 ### Mapping Addresses to the Grid
 
-For a destination IP `o0.o1.o2.o3` within the scanner's most-targeted `o0.o1.0.0/16`, the distance along the curve is `d = o2 * 256 + o3` (the address's position within the /16, treating the third and fourth octets as one 16-bit number). Feed `d` to `hilbert_d2xy(8, d)` to get its `(x, y)` position in the 256×256 image, then accumulate that destination's packet count into `grid[y][x]`.
+For a destination IP `o0.o1.o2.o3` within the target `o0.o1.0.0/16`, the distance along the curve is `d = o2 * 256 + o3` (the address's position within the /16, treating the third and fourth octets as one 16-bit number). Feed `d` to `hilbert_d2xy(8, d)` to get its `(x, y)` position in the 256×256 image, then accumulate that destination's packet count into `grid[y][x]`.
 
 ### Worked Example
 
 ```
-Destinations probed (within 172.16.0.0/16):
-  172.16.0.1   -> 40 packets   (o2=0, o3=1   -> d=1)
-  172.16.0.2   -> 40 packets   (o2=0, o3=2   -> d=2)
-  172.16.5.200 -> 12 packets   (o2=5, o3=200 -> d=1480)
+Destinations probed (within 10.42.0.0/16):
+  10.42.0.1   -> 40 packets   (o2=0, o3=1   -> d=1)
+  10.42.0.2   -> 40 packets   (o2=0, o3=2   -> d=2)
+  10.42.5.200 -> 12 packets   (o2=5, o3=200 -> d=1480)
 
-hilbert_d2xy(8, 1)    -> (x1, y1)   # adjacent to d=0's origin corner
-hilbert_d2xy(8, 2)    -> (x2, y2)   # adjacent to (x1, y1) - d=1 and d=2 are close in the curve
-hilbert_d2xy(8, 1480) -> (x3, y3)   # far from the above - a different region of the /16
+hilbert_d2xy(8, 1)    -> (1, 0)     # next to d=0's origin corner at (0, 0)
+hilbert_d2xy(8, 2)    -> (1, 1)     # adjacent to (1, 0) - d=1 and d=2 are close on the curve
+hilbert_d2xy(8, 1480) -> (13, 53)   # far from the above - a different region of the /16
 
-grid[y1][x1] += 40
-grid[y2][x2] += 40
-grid[y3][x3] += 12
+grid[0][1]   += 40
+grid[1][1]   += 40
+grid[53][13] += 12
 ```
 
 The two addresses that are numerically adjacent (`.0.1` and `.0.2`) land on adjacent pixels; the address 1,479 addresses away lands somewhere else in the image entirely — exactly the locality property that makes gaps and clusters in the scanner's coverage visible at a glance.
 
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | Task 7 ⮕ | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb)
+### Reading the Image: `(x, y)` Is Not `(o2, o3)`
+
+The curve *reorders* the address space, so the axes of the finished image are **Hilbert curve positions, not octets**. In the example above `o2=0, o3=1` lands at `(x=1, y=0)` — not `(0, 1)`. You cannot name a block by reading its coordinates off the axes.
+
+What the curve does guarantee is that each **/24** — 256 consecutive values of `d` — occupies exactly one **aligned 16×16 cell** of the image. That is what the 16-pixel gridlines mark, and the notebook prints each cell's third octet inside it. To answer Q8, read those printed labels.
+
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | Task 7 ⮕ | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

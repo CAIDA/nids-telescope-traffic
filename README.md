@@ -12,6 +12,11 @@ The goal of this assignment is to build flow records from raw network telescope 
 
 <img src="images/hilbert-curve.png" width="150px">
 
+## Slides
+
+- [ETP week 06 Telescope](slides/ETP-Week-06-etp-Telescope-Plenary.pptx)
+- [ETP week 06 Expanse Assignment](slides/ETP-Week-06-expanse_assignment.pdf)
+
 ## Overview
 
 Start by reading **Introduction** to get the background needed to understand the assignment. **Datasets** explains each dataset and how to access it.

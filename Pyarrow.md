@@ -1,4 +1,4 @@
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | Pyarrow ⮕ | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | Pyarrow ⮕ | [Tasks](Tasks.md) | [Task 7 Guide](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 # pyarrow Guide: Persisting Flow Records to Parquet
 
@@ -111,4 +111,4 @@ freed before the analysis begins.
   (§4).
 - **Read back only what you need** — the next stage rarely needs every column.
 
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | Pyarrow ⮕ | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | Pyarrow ⮕ | [Tasks](Tasks.md) | [Task 7 Guide](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

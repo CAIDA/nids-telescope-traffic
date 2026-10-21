@@ -1,4 +1,4 @@
-README ⮕ | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
+README ⮕ | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7 Guide](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 ### Network Infrastructure Data Science (NIDS) Module
 
@@ -62,4 +62,4 @@ nids-telescope-traffic
 - **pyarrow**: The Python binding for Apache Arrow, used in the compare notebook to write flow records straight to Parquet without first building a pandas `DataFrame`, so only one copy of the data is resident at a time. See [Pyarrow](Pyarrow.md).
 - **Hilbert curve**: A space-filling curve that maps a 1-D index to 2-D coordinates while preserving locality — nearby indices land on nearby points, at every scale. Used here to lay an IPv4 /16 block out as a 256×256 image so that scanned and unscanned regions of the address space form visually compact clusters rather than scattered noise.
 
-README ⮕ | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
+README ⮕ | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7 Guide](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

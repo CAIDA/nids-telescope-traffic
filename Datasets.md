@@ -1,4 +1,4 @@
-[README](README.md) | [Introduction](Introduction.md) | Datasets ⮕ | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
+[README](README.md) | [Introduction](Introduction.md) | Datasets ⮕ | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7 Guide](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 # Datasets
 
@@ -127,4 +127,4 @@ Which snapshot: the notebook lists the RIB archive for collector `COLLECTOR` (`r
 
 Note one difference from the prior module's environment: this one has **`pybgpkit-parser`** installed rather than `pybgpkit`, imported as `import pybgpkit_parser as bgpkit` — the `bgpkit.Parser(...)` API itself is unchanged.
 
-[README](README.md) | [Introduction](Introduction.md) | Datasets ⮕ | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
+[README](README.md) | [Introduction](Introduction.md) | Datasets ⮕ | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7 Guide](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

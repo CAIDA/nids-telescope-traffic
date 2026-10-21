@@ -1,4 +1,4 @@
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | Task 7 ⮕ | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | Task 7 Guide ⮕ | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 # Task 7 Guidance: Visualizing a Scan with a Hilbert Curve
 
@@ -73,4 +73,4 @@ The curve *reorders* the address space, so the axes of the finished image are **
 
 What the curve does guarantee is that each **/24** — 256 consecutive values of `d` — occupies exactly one **aligned 16×16 cell** of the image. That is what the 16-pixel gridlines mark, and the notebook prints each cell's third octet inside it. To answer Q8, read those printed labels.
 
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | Task 7 ⮕ | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | Task 7 Guide ⮕ | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

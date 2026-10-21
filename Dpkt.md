@@ -1,4 +1,4 @@
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | Dpkt ⮕ | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | Dpkt ⮕ | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7 Guide](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
 # dpkt Guide: Parsing Telescope Packets
 
@@ -222,4 +222,4 @@ silently.) The `flow_key` you complete in Task 1 uses exactly this guard.
 - **Let dpkt stay lazy** — only walk into the layers you actually need, so a
   packet you reject early is never fully decoded.
 
-[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | Dpkt ⮕ | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
+[README](README.md) | [Introduction](Introduction.md) | [Datasets](Datasets.md) | Dpkt ⮕ | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7 Guide](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)

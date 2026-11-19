@@ -1,10 +1,12 @@
 README ⮕ | [Introduction](Introduction.md) | [Datasets](Datasets.md) | [Dpkt](Dpkt.md) | [Pyarrow](Pyarrow.md) | [Tasks](Tasks.md) | [Task 7 Guide](Task-hilbert-map.md) | [flow compare](flow_compare.ipynb) | [flow analysis](flow_analysis.ipynb) | [Slides](slides/)
 
-### Network Infrastructure Data Science (NIDS) Module
+### [Network Infrastructure Data Science (NIDS) Assignment](https://www.caida.org/projects/nids/)
 
 ---
 
 # Investigating a Traffic Surge in the UCSD Network Telescope
+
+**authors:** Bradley Huffaker, Nick Terrel
 
 ## Learning Objectives
 
